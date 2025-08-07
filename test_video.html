@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        video {
+            max-width: 100%;
+            margin: 20px 0;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Playback Test</h1>
+    
+    <h2>Test 1: Local Video (if available)</h2>
+    <video id="local-video" controls>
+        <source src="/static/test.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div id="local-error" class="error"></div>
+    
+    <h2>Test 2: GCS Video 1</h2>
+    <video id="gcs-video1" controls>
+        <source src="https://storage.googleapis.com/public-bdoohan-bucket/cvs_shelfs0 (1).mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div id="gcs-error1" class="error"></div>
+    
+    <h2>Test 3: GCS Video 2</h2>
+    <video id="gcs-video2" controls>
+        <source src="https://storage.googleapis.com/public-bdoohan-bucket/cvs_shelfs0 (2).mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div id="gcs-error2" class="error"></div>
+    
+    <script>
+        // Add error handling for all videos
+        document.querySelectorAll('video').forEach((video, index) => {
+            video.addEventListener('error', function(e) {
+                console.error(`Video ${index} error:`, e);
+                const errorDiv = document.getElementById(
+                    index === 0 ? 'local-error' : 
+                    index === 1 ? 'gcs-error1' : 'gcs-error2'
+                );
+                errorDiv.textContent = 'Error loading video: ' + (video.error ? video.error.message : 'Unknown error');
+            });
+            
+            video.addEventListener('loadeddata', function() {
+                console.log(`Video ${index} loaded successfully`);
+            });
+        });
+    </script>
+</body>
+</html> 
